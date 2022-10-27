@@ -44,13 +44,14 @@ class JpaApplicationTests(
         println("--------------------")
         val book = bookRepo.findByName("test")
 
-        chapterRepo.insertNew(book.id)
+        chapterRepo.insertNew(501,book.id)
 
         val bookAfter = bookRepo.findByNameWithChildren("test")
 
     }
 
     @Test
+    @Disabled
     fun `TEST current situation of add chapter`() {
         val book1 = BookEntity(
             id = 1, title = "test",
@@ -60,23 +61,27 @@ class JpaApplicationTests(
         bookRepo.save(book1)
 
         println("--------------------")
-        val time = measureTimeMillis {
-            val book = bookRepo.findByNameWithChildren("test")
+        (1..50).map {
+            val time = measureTimeMillis {
+                val book = bookRepo.findByNameWithChildren("test")
 
-           //book.chapters.toMutableList().add(ChapterEntity(501, name = "ops"))
-            bookRepo.save(BookEntity(
-                id = book.id,
-                title = book.title,
-                chapters = book.chapters.toMutableSet()+ChapterEntity(501, name = "ops")
-            ))
+                //book.chapters.toMutableList().add(ChapterEntity(501, name = "ops"))
+                bookRepo.save(
+                    BookEntity(
+                        id = book.id,
+                        title = book.title,
+                        chapters = book.chapters.toMutableSet() + ChapterEntity(500 + it.toLong(), name = "ops")
+                    )
+                )
+            }
+            print("REQUESTED $time ms")
         }
 
-        print("REQUESTED $time ms")
-
+        println("--------------------")
     }
 
     @Test
-    @Disabled
+    //@Disabled
     fun `TEST try to add a new chapter with native query`() {
         val book1 = BookEntity(
             id = 1, title = "test",
@@ -86,12 +91,15 @@ class JpaApplicationTests(
         bookRepo.save(book1)
 
         println("--------------------")
-        val time = measureTimeMillis {
-            val book = bookRepo.findByName("test")
-            chapterRepo.insertNew(book.id)
-        }
+        (1..50).map {
+            val time = measureTimeMillis {
+                val book = bookRepo.findByName("test")
+                chapterRepo.insertNew(500+it.toLong(), book.id)
+            }
 
-        print("REQUESTED $time ms")
+            print("REQUESTED $time ms")
+        }
+        println("--------------------")
     }
 
 

@@ -11,7 +11,7 @@ interface ChapterRepo : JpaRepository<ChapterEntity, Long> {
 
     @Transactional
     @Modifying
-    @Query("INSERT INTO CHAPTER(chapter_id, name, book_id) VALUES (501,'run new!', :bookId)", nativeQuery = true)
-    fun insertNew(bookId: Long)
+    @Query("INSERT INTO CHAPTER(chapter_id, name, book_id) VALUES (:chapterId,'run new!', :bookId)", nativeQuery = true)
+    fun insertNew(chapterId: Long, bookId: Long)
 
 }
