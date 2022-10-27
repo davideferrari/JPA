@@ -1,13 +1,9 @@
 package com.example.jpa.entity
 
-import javax.persistence.CascadeType
-import javax.persistence.Column
-import javax.persistence.Entity
-import javax.persistence.Id
-import javax.persistence.JoinColumn
-import javax.persistence.OneToMany
+import javax.persistence.*
 
 @Entity
+@Table(name="book")
 class BookEntity(
     @Id
     @Column(name = "book_id")
@@ -17,5 +13,5 @@ class BookEntity(
 
     @OneToMany(cascade = [CascadeType.ALL])
     @JoinColumn(name="book_id")
-    val chapters : List<ChapterEntity>
+    val chapters : Set<ChapterEntity>
 )
