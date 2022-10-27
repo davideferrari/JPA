@@ -1,11 +1,10 @@
 package com.example.jpa.repo
 
 import com.example.jpa.entity.BookEntity
+import com.example.jpa.entity.ChapterEntity
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Query
 
-interface BookRepo : JpaRepository<BookEntity, Long> {
+interface ChapterRepo : JpaRepository<ChapterEntity, Long> {
 
-    @Query("SELECT b FROM BookEntity b WHERE b.title=:title ")
-    fun findByName(title : String)
 }
